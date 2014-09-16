@@ -5,7 +5,7 @@ An Eudora and NUPOP change password server that allows user password change on P
 
 Features
 --------
-* Uses PAM (Pluggable Authentication Modules) so all system-wide controls (such as password quality auditing) are still enforced
+* Uses [PAM (Pluggable Authentication Module)](https://en.wikipedia.org/wiki/Pluggable_authentication_module) so all system-wide controls (such as password quality auditing) are still enforced
 * Does not call any external programs with SUID permissions (as CGI wrappers for `passwd`  do)
 * Simple, clean code with no known security issues since 2002
 
