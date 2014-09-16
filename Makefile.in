@@ -7,8 +7,8 @@ install: poppassd
 	@INSTALL@ -g bin -o root -m 500 poppassd @sbindir@
 
 clean:
-	rm -f *.o *~* core Makefile.new Makefile.bak poppassd
+	rm -f *.o *~* core Makefile.new Makefile.bak poppassd *.log *.status
+	rm -rf ./autom4te.cache
 
-m4:
+reconf: m4
 	autoreconf -i --install
-
