@@ -18,11 +18,11 @@ Protocol
 Poppassd implements a simple, text based protocol for user authentication and password change:
 
     200 poppassd
-    USER kravietz
+    USER username
     200 Your password please
-    PASS wie9on2cheB7oojeokai
+    PASS old_password
     200 Your new password please
-    NEWPASS eW4ieLieYieN6iefaith
+    NEWPASS new_password
     200 Password changed
     QUIT
     200 Bye
@@ -30,9 +30,9 @@ Poppassd implements a simple, text based protocol for user authentication and pa
 Server responses starting with `200` are successs, `500` are errors:
 
     200 poppassd
-    USER kravietz
+    USER username
     200 Your password please.
-    PASS dupa
+    PASS old_password
     500 Old password is incorrect
 
 Integration with web applications requires that the application  connects to `localhost` on port `106/tcp` and speaks the above protocol using the data supplier by the user.
@@ -49,16 +49,35 @@ Installation from source:
     ./configure
     make
     sudo make install
+
+By default, this will install:
+
+* `poppassd` binary to `/usr/local/sbin`
+* `poppassd` [PAM](https://en.wikipedia.org/wiki/Pluggable_authentication_module) configuration file to `/etc/pam.d`
+* `poppassd` [Xinetd](http://www.xinetd.org/) configuration file to `/etc/xinetd.d`
+
+Testing is simple as `poppassd` works on standard input:
+
+    sudo /usr/local/sbin/poppassd
+    200 poppassd
+    USER kravietz
+    200 Your password please
+    PASS wie9on2cheB7oojeokai
+    200 Your new password please
+    NEWPASS eW4ieLieYieN6iefaith
+    200 Password changed
+    QUIT
+    200 Bye 
+    
+If it does not work, check `/var/log/auth.log` in the first place.
  
 Credits
 -------
-Based on poppassd by John Norstad <j-norstad@nwu.edu>, Roy Smith <roy@nyu.edu> and Daniel L. Leavitt <dll@mitre.org>.
-
-Shadow file update code taken from shadow-960810 by John F. Haugh II <jfh@rpp386.cactus.org> and Marek Michalkiewicz <marekm@i17linuxb.ists.pwr.wroc.pl>.
+This program was initially based on poppassd by John Norstad <j-norstad@nwu.edu>, Roy Smith <roy@nyu.edu> and Daniel L. Leavitt <dll@mitre.org>. Shadow file update code taken from shadow-960810 by John F. Haugh II <jfh@rpp386.cactus.org> and Marek Michalkiewicz <marekm@i17linuxb.ists.pwr.wroc.pl>. A number of people (listed below) have contributed with suggestions and fixes.
 
 Versions
 --------
-* Version 1.8.6 - František Hanzlík
+* Version 1.8.6 - František Hanzlík helped me refresh `poppassd` and move it to GitHub
 * Version 1.8.4 - Steven Danz fixed one bug where PAM errors (like cracklib complaints) were actually not preventing the user from changing the password.  Now, if cracklib reports a weak password, it won't be accepted.  To return to the previous default behaviour, remove cracklib from poppassd PAM configuration.
 * Version 1.8.3 - has changed the default PAM service name from "passwd" to "poppassd" (Radoslaw Antoniuk) and some more cleanups on password and username length (Mihail Vidiassov). Also added configuration hints from Brian Kircher.
 * Version 1.8.2 - has some cleanups in maximum username and password length checking and more verbose logging. It also supports passwords  with space inside thanks to suggestion from Adam Conrad.
