@@ -4,7 +4,9 @@ poppassd: poppassd.c Makefile
 	@CC@ @CFLAGS@ poppassd.c -o poppassd @LIBS@
 
 install: poppassd
-	@INSTALL@ -g bin -o root -m 500 poppassd @sbindir@
+	@INSTALL@ -g bin -o root -m 500 poppassd @prefix@@sbindir@
+	@INSTALL@ -g root -o root -m 644 etc/pam.d/poppassd @sysconfdir@/pam.d
+	@INSTALL@ -g root -o root -m 644 etc/xinetd.d/poppassd @sysconfdir@/xinetd.d
 
 clean:
 	rm -f *.o *~* core Makefile.new Makefile.bak poppassd *.log *.status
