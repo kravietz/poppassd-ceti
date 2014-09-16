@@ -4,7 +4,9 @@ poppassd: poppassd.c Makefile
 	gcc -g -O2 -fstack-protector-all -Wall -O3 -D_FORTIFY_SOURCE=2 poppassd.c -o poppassd -lpam 
 
 install: poppassd
-	/usr/bin/install -c -g bin -o root -m 500 poppassd ${exec_prefix}/sbin
+	/usr/bin/install -c -g bin -o root -m 500 poppassd /usr/local${exec_prefix}/sbin
+	/usr/bin/install -c -g root -o root -m 644 etc/pam.d/poppassd ${prefix}/etc/pam.d
+	/usr/bin/install -c -g root -o root -m 644 etc/xinetd.d/poppassd ${prefix}/etc/xinetd.d
 
 clean:
 	rm -f *.o *~* core Makefile.new Makefile.bak poppassd *.log *.status
