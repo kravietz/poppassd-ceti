@@ -579,7 +579,7 @@ MAKEFLAGS=
 
 # Identity of this package.
 PACKAGE_NAME='poppassd-ceti'
-PACKAGE_TARNAME='poppassd-ceti'
+PACKAGE_TARNAME='https://github.com/kravietz/poppassd-ceti'
 PACKAGE_VERSION='1.8.6'
 PACKAGE_STRING='poppassd-ceti 1.8.6'
 PACKAGE_BUGREPORT='poppassd-bugs@nym.hush.com'
@@ -1276,7 +1276,8 @@ Fine tuning of the installation directories:
   --infodir=DIR           info documentation [DATAROOTDIR/info]
   --localedir=DIR         locale-dependent data [DATAROOTDIR/locale]
   --mandir=DIR            man documentation [DATAROOTDIR/man]
-  --docdir=DIR            documentation root [DATAROOTDIR/doc/poppassd-ceti]
+  --docdir=DIR            documentation root
+                          [DATAROOTDIR/doc/https://github.com/kravietz/poppassd-ceti]
   --htmldir=DIR           html documentation [DOCDIR]
   --dvidir=DIR            dvi documentation [DOCDIR]
   --pdfdir=DIR            pdf documentation [DOCDIR]
