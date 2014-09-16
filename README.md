@@ -69,7 +69,14 @@ Testing is simple as `poppassd` works on standard input:
     QUIT
     200 Bye 
     
-If it does not work, check `/var/log/auth.log` in the first place.
+If it does not work, check `/var/log/auth.log` in the first place. If you're using `inetd` and `tcpd` you will need to add the following line to `/etc/inetd.conf`:
+
+    poppassd stream tcp nowait root /usr/sbin/tcpd poppassd
+
+And to `/etc/hosts.deny`:
+
+    poppassd: localhost: allow
+    poppassd: ALL: deny
  
 Credits
 -------
