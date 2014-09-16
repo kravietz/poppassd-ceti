@@ -11,7 +11,9 @@ Features
 
 Security model
 --------------
-Poppassd should be only listening on local network interface (`localhost`). The program does not have any access control restrictions and these need to be implemented using operating system's native daemons, such as `inetd` and `tcpd`.
+Poppassd first authenticates the user with its username and password. The authentication is done through PAM so it includes all PAM restrictions (login time etc) configured locally. Only after successful authentication the program will allow password change. In addition to that poppassd implements internal throttling for unsuccessful logins.
+
+If used with web applications, it's recommended that poppassd is only listening on local network interface (`localhost`). The program does not have any access control restrictions and these need to be implemented using operating system's native daemons, such as `inetd` and `tcpd`.
 
 Protocol
 --------
@@ -41,11 +43,14 @@ Installation
 ------------
 Prerequisites:
 
-* RPM based  (RedHat, CentOS etc):  `yum install pam pam-devel`
-* APT based  (Debian, Ubuntu etc): `apt-get install libpam0g libpam0g-dev`
+* RPM based  (RedHat, CentOS etc):  `yum install pam pam-devel autoconf automake`
+* APT based  (Debian, Ubuntu etc): `apt-get install libpam0g libpam0g-dev autoconf automake`
 
 Installation from source:
 
+    git clone https://github.com/kravietz/poppassd-ceti.git
+    cd poppassd-ceti
+    autoreconf -I m4 -i
     ./configure
     make
     sudo make install
@@ -88,7 +93,7 @@ This program was initially based on poppassd by John Norstad <j-norstad@nwu.edu>
 
 Versions
 --------
-* Version 1.8.6 - František Hanzlík helped me refresh `poppassd` and move it to GitHub
+* Version 1.8.6 - František Hanzlík helped me refresh `poppassd` and move it to GitHub; the program is now compiled with autotools and includes several security improvements
 * Version 1.8.4 - Steven Danz fixed one bug where PAM errors (like cracklib complaints) were actually not preventing the user from changing the password.  Now, if cracklib reports a weak password, it won't be accepted.  To return to the previous default behaviour, remove cracklib from poppassd PAM configuration.
 * Version 1.8.3 - has changed the default PAM service name from "passwd" to "poppassd" (Radoslaw Antoniuk) and some more cleanups on password and username length (Mihail Vidiassov). Also added configuration hints from Brian Kircher.
 * Version 1.8.2 - has some cleanups in maximum username and password length checking and more verbose logging. It also supports passwords  with space inside thanks to suggestion from Adam Conrad.
