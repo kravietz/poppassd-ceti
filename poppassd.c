@@ -89,6 +89,7 @@ char newpass[BUFSIZE];
 #define POP_NEWPASS 1
 #define POP_SKIPASS 2
 short int pop_state = POP_OLDPASS;
+int pamret;
 
 void WriteToClient (char *fmt, ...)
 {
@@ -214,7 +215,8 @@ int main (int argc, char *argv[])
 	     WriteToClient("500 Password required");
 	     exit(1);
      }
-     if(pam_authenticate(pamh, 0) != PAM_SUCCESS)
+     pamret = pam_authenticate(pamh, 0);
+     if(pamret != PAM_SUCCESS)
      {
           /* pause to make brute force attacks harder */
           sleep(BAD_PASS_DELAY);
@@ -223,7 +225,7 @@ int main (int argc, char *argv[])
 	      exit(1);
      }
 
-     pw=getpwnam(user);
+     pw = getpwnam(user);
 
      if(pw->pw_uid<POP_MIN_UID || pw == NULL) {
          WriteToClient("500 Old password is incorrect");
@@ -244,8 +246,9 @@ int main (int argc, char *argv[])
 	  exit(1);
      }
 
-     if(pam_chauthtok(pamh, 0) != PAM_SUCCESS) {
-	     WriteToClient("500 Server error, password not changed");
+     pamret = pam_chauthtok(pamh, PAM_SILENT);
+     if(pamret != PAM_SUCCESS) {
+         WriteToClient("500 Server pam_chauthtok error %i, password not changed", pamret);
 	     exit(1);
      } else {
      		syslog(LOG_ERR, "changed POP3 password for %s", user);
