@@ -104,7 +104,6 @@ void WriteToClient (char *fmt, ...)
 void ReadFromClient (char *line)
 {
 	char *sp;
-	int i;
 
 	bzero(line, BUFSIZE);
 	if(fgets (line, BUFSIZE-1, stdin)) {
@@ -176,16 +175,8 @@ int main (int argc, char *argv[])
 {
      char line[BUFSIZE];
      char user[BUFSIZE];
-     char emess[BUFSIZE];
-     char *slavedev;
      struct passwd *pw, *getpwnam();
-     struct spwd *sp;
-     int c, master;
-     pid_t pid, wpid;
-     int wstat;
-     int ret;
      pam_handle_t *pamh=NULL;
-     char *item=oldpass;
      
      *user = *oldpass = *newpass = 0;
 
