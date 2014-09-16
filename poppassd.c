@@ -3,7 +3,7 @@
  *
  * A Eudora and NUPOP change password server.
  * 
- * Pawel Krawczyk <kravietz@echelon.pl>
+ * Pawel Krawczyk <poppassd-bugs@nym.hush.com>
  *
  * Based on poppassd by John Norstad <j-norstad@nwu.edu>,
  * Roy Smith <roy@nyu.edu> and Daniel L. Leavitt <dll.mitre.org>.
