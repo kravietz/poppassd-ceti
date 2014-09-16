@@ -34,7 +34,7 @@
  *   E: <closes connection>
  */
  
-#define VERSION "1.8.5"
+#define VERSION "1.8.6"
 #define BAD_PASS_DELAY 	3   /* delay in seconds after bad 'Old password' */
 #define POP_MIN_UID		100 /* minimum UID which is allowed to change
 							   password via poppassd */
@@ -182,41 +182,41 @@ int main (int argc, char *argv[])
 
      openlog("poppassd", LOG_PID, LOG_LOCAL4);
 
-     WriteToClient ("200 poppassd v%s hello, who are you?", VERSION);
+     WriteToClient ("200 poppassd");
      ReadFromClient (line);
      if( strlen(line) > atoi(MAX_LEN_USERNAME) ) {
-	  WriteToClient ("500 Username too long (max %d).", atoi(MAX_LEN_USERNAME));
+	  WriteToClient ("500 Username too long (max %d)", atoi(MAX_LEN_USERNAME));
 	  exit(1);
      }
      sscanf (line, "user %" MAX_LEN_USERNAME "s", user) ;
      if (strlen (user) == 0 )
      {
-	  WriteToClient ("500 Username required.");
+	  WriteToClient ("500 Username required");
 	  exit(1);
      }
      if(pam_start("poppassd", user, &pam_conv, &pamh) != PAM_SUCCESS) 
      {
-	     WriteToClient("500 Invalid username.");
+	     WriteToClient("500 Invalid username");
 	     exit(1);
      }
 
-     WriteToClient ("200 Your password please.");
+     WriteToClient ("200 Your password please");
      ReadFromClient (line);
      if( strlen(line) > atoi(MAX_LEN_PASS) )
      {
-	     WriteToClient("500 Password length exceeded (max %d).",
+	     WriteToClient("500 Password length exceeded (max %d)",
 			     atoi(MAX_LEN_PASS) );
 	     exit(1);
      }
      sscanf (line, "pass %" MAX_LEN_PASS "c", oldpass);
      if(strlen(oldpass) == 0) 
      {
-	     WriteToClient("500 Password required.");
+	     WriteToClient("500 Password required");
 	     exit(1);
      }
      if(pam_authenticate(pamh, 0) != PAM_SUCCESS)
      {
-	  WriteToClient ("500 Old password is incorrect.");
+	  WriteToClient ("500 Old password is incorrect");
           syslog(LOG_ERR, "old password is incorrect for user %s", user);
           /* pause to make brute force attacks harder */
           sleep(BAD_PASS_DELAY);
@@ -226,21 +226,21 @@ int main (int argc, char *argv[])
      pw=getpwnam(user);
 
      if(pw->pw_uid<POP_MIN_UID || pw == NULL) {
-         WriteToClient("500 Old password is incorrect.");
+         WriteToClient("500 Old password is incorrect");
          syslog(LOG_ERR, "failed attempt to change password for %s", user);
          exit(1);
      }
 
      pop_state = POP_NEWPASS;
 
-     WriteToClient ("200 Your new password please.");
+     WriteToClient ("200 Your new password please");
      ReadFromClient (line);
      sscanf (line, "newpass %" MAX_LEN_PASS "c", newpass);
      
      /* new pass required */
      if (strlen (newpass) == 0)
      {
-	  WriteToClient ("500 New password required.");
+	  WriteToClient ("500 New password required");
 	  exit(1);
      }
 
@@ -249,16 +249,16 @@ int main (int argc, char *argv[])
 	     exit(1);
      } else {
      		syslog(LOG_ERR, "changed POP3 password for %s", user);
-     		WriteToClient("200 Password changed, thank-you.");
+     		WriteToClient("200 Password changed");
      		ReadFromClient (line);
      		if (strncmp(line, "quit", 4) != 0) {
-      			WriteToClient("500 Quit required.");
+      			WriteToClient("500 Quit requested");
      			exit (1);
 		}
      }
 	  
      pam_end(pamh, 0);
-     WriteToClient("200 Bye.");
+     WriteToClient("200 Bye");
      closelog();
      exit(0);
      }
