@@ -1,5 +1,5 @@
 BINDIR = /usr/sbin
-CFLAGS = -O2
+CFLAGS = -O2 -Wall
 CC=gcc
 
 poppassd: poppassd.c Makefile
