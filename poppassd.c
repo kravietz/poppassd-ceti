@@ -216,11 +216,11 @@ int main (int argc, char *argv[])
      }
      if(pam_authenticate(pamh, 0) != PAM_SUCCESS)
      {
-	  WriteToClient ("500 Old password is incorrect");
-          syslog(LOG_ERR, "old password is incorrect for user %s", user);
           /* pause to make brute force attacks harder */
           sleep(BAD_PASS_DELAY);
-	  exit(1);
+	      WriteToClient ("500 Old password is incorrect");
+          syslog(LOG_ERR, "old password is incorrect for user %s", user);
+	      exit(1);
      }
 
      pw=getpwnam(user);
