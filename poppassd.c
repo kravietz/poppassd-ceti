@@ -66,9 +66,8 @@
 #include <shadow.h>
 #include <signal.h>
 #include <sys/time.h>
-#if !__GLIBC__ >= 2
 #include <ulimit.h>
-#endif
+
 #include <security/pam_appl.h>
 #include <security/pam_misc.h>
 
