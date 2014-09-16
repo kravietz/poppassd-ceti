@@ -74,14 +74,6 @@
 
 #define LOCK_TRIES 30
 
-#ifndef UL_SETFSIZE
-#ifdef UL_SFILLIM
-#define UL_SETFSIZE UL_SFILLIM
-#else
-#define UL_SETFSIZE 2
-#endif
-#endif
-
 /* need to be global for poppassd_conv */
 char oldpass[BUFSIZE];
 char newpass[BUFSIZE];
