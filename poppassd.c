@@ -107,14 +107,15 @@ void ReadFromClient (char *line)
 	int i;
 
 	bzero(line, BUFSIZE);
-	fgets (line, BUFSIZE-1, stdin);
-	if ((sp = strchr(line, '\n')) != NULL) *sp = '\0'; 
-	if ((sp = strchr(line, '\r')) != NULL) *sp = '\0'; 
+	if(fgets (line, BUFSIZE-1, stdin)) {
+	    if ((sp = strchr(line, '\n')) != NULL) *sp = '\0'; 
+	    if ((sp = strchr(line, '\r')) != NULL) *sp = '\0'; 
 	
-	/* convert initial keyword on line to lower case. */
+	    /* convert initial keyword on line to lower case. */
 	
-	for (sp = line; isalpha(*sp); sp++) *sp = tolower(*sp);
-	line[BUFSIZE-1] = '\0';
+	    for (sp = line; isalpha(*sp); sp++) *sp = tolower(*sp);
+	    line[BUFSIZE-1] = '\0';
+    }
 }
 
 int poppassd_conv(num_msg, msg, resp, appdata_ptr)
