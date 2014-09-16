@@ -41,11 +41,14 @@ Installation
 ------------
 Prerequisites:
 
-* RPM based  (RedHat, CentOS etc):  `yum install pam pam-devel`
-* APT based  (Debian, Ubuntu etc): `apt-get install libpam0g libpam0g-dev`
+* RPM based  (RedHat, CentOS etc):  `yum install pam pam-devel autoconf automake`
+* APT based  (Debian, Ubuntu etc): `apt-get install libpam0g libpam0g-dev autoconf automake`
 
 Installation from source:
 
+    git clone https://github.com/kravietz/poppassd-ceti.git
+    cd poppassd-ceti
+    autoreconf -I m4 -i
     ./configure
     make
     sudo make install
