@@ -71,6 +71,8 @@
 #include <security/pam_appl.h>
 #include <security/pam_misc.h>
 
+#include "config.h"
+
 #define LOCK_TRIES 30
 
 /* need to be global for poppassd_conv */
