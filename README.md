@@ -56,6 +56,17 @@ By default, this will install:
 * `poppassd` [PAM](https://en.wikipedia.org/wiki/Pluggable_authentication_module) configuration file to `/etc/pam.d`
 * `poppassd` [Xinetd](http://www.xinetd.org/) configuration file to `/etc/xinetd.d`
 
+If you're using `xinetd` appropriate configuration file has been already installed into `/etc/xinetd.d`. If you prefer the traditional `inetd` and `tcpd` you will need to add the following line to `/etc/inetd.conf`:
+
+    poppassd stream tcp nowait root /usr/sbin/tcpd poppassd
+
+And to `/etc/hosts.deny`:
+
+    poppassd: localhost: allow
+    poppassd: ALL: deny
+
+Testing
+-------
 Testing is simple as `poppassd` works on standard input:
 
     sudo /usr/local/sbin/poppassd
@@ -69,14 +80,7 @@ Testing is simple as `poppassd` works on standard input:
     QUIT
     200 Bye 
     
-If it does not work, check `/var/log/auth.log` in the first place. If you're using `inetd` and `tcpd` you will need to add the following line to `/etc/inetd.conf`:
-
-    poppassd stream tcp nowait root /usr/sbin/tcpd poppassd
-
-And to `/etc/hosts.deny`:
-
-    poppassd: localhost: allow
-    poppassd: ALL: deny
+If it does not work, check `/var/log/auth.log` in the first place. 
  
 Credits
 -------
