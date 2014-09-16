@@ -2,6 +2,7 @@ AC_INIT([poppassd-ceti], [1.8.6], [poppassd-bugs@nym.hush.com])
 AC_CONFIG_SRCDIR([poppassd.c])
 AC_CHECK_LIB(pam, pam_authenticate, [], [You need to PAM development package: "apt-get install libpam0g"])
 
+AC_LANG([C])
 AC_PROG_CC
 AC_PROG_INSTALL
 
