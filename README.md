@@ -17,38 +17,38 @@ Protocol
 --------
 Poppassd implements a simple, text based protocol for user authentication and password change:
 
- 200 poppassd
- USER kravietz
- 200 Your password please
- PASS wie9on2cheB7oojeokai
- 200 Your new password please
- NEWPASS eW4ieLieYieN6iefaith
- 200 Password changed
- QUIT
- 200 Bye
+    200 poppassd
+    USER kravietz
+    200 Your password please
+    PASS wie9on2cheB7oojeokai
+    200 Your new password please
+    NEWPASS eW4ieLieYieN6iefaith
+    200 Password changed
+    QUIT
+    200 Bye
 
 Server responses starting with `200` are successs, `500` are errors:
 
- 200 poppassd
- USER kravietz
- 200 Your password please.
- PASS dupa
- 500 Old password is incorrect
+    200 poppassd
+    USER kravietz
+    200 Your password please.
+    PASS dupa
+    500 Old password is incorrect
 
 Integration with web applications requires that the application  connects to `localhost` on port `106/tcp` and speaks the above protocol using the data supplier by the user.
 
 Installation
 ------------
-Make sure you have the following packages installed:
+Prerequisites:
 
-* RPM based systems (RedHat, CentOS etc): `pam pam-devel` (so `yum install pam pam-devel`)
-* APT based systems (Debian, Ubuntu etc): `libpam0g libpam0g-dev` (so `apt-get install libpam0g libpam0g-dev`)
+* RPM based  (RedHat, CentOS etc):  `yum install pam pam-devel`
+* APT based  (Debian, Ubuntu etc): `apt-get install libpam0g libpam0g-dev`
 
 Installation from source:
 
- ./configure
- make
- sudo make install
+    ./configure
+    make
+    sudo make install
  
 Credits
 -------
