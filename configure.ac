@@ -13,6 +13,9 @@ AC_CHECK_HEADER([security/pam_appl.h], [], [AC_MSG_ERROR([You need to PAM develo
 AC_CHECK_HEADER([security/pam_misc.h], [], [AC_MSG_ERROR([You need to PAM development package: "apt-get install libpam0g-dev"])])
 
 AX_CHECK_COMPILE_FLAG(["-fstack-protector-all"], [AX_APPEND_FLAG(["-fstack-protector-all"],[CFLAGS])], [])
+AX_CHECK_COMPILE_FLAG(["-Wl,-z,relro"], [AX_APPEND_FLAG(["-Wl,-z,relro"],[CFLAGS])], [])
+AX_CHECK_COMPILE_FLAG(["-Wl,-z,now"], [AX_APPEND_FLAG(["-Wl,-z,now"],[CFLAGS])], [])
+AX_CHECK_COMPILE_FLAG(["-fPIE"], [AX_APPEND_FLAG(["-fPIE"],[CFLAGS])], [])
 AX_CFLAGS_WARN_ALL()
 
 AX_APPEND_FLAG(["-O3"],[CFLAGS])
