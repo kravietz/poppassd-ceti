@@ -9,8 +9,8 @@ AC_PROG_INSTALL
 
 AC_CHECK_HEADERS([fcntl.h shadow.h stdlib.h string.h strings.h sys/time.h syslog.h])
 
-AC_CHECK_HEADER([security/pam_appl.h], [], [AC_MSG_ERROR([You need to PAM development package: "apt-get install libpam0g-dev"])])
-AC_CHECK_HEADER([security/pam_misc.h], [], [AC_MSG_ERROR([You need to PAM development package: "apt-get install libpam0g-dev"])])
+AC_CHECK_HEADER([security/pam_appl.h], [], [AC_MSG_ERROR([You need to PAM development package: "apt-get install libpam0g-dev" or "yum install pam-devel"])])
+AC_CHECK_HEADER([security/pam_misc.h], [], [AC_MSG_ERROR([You need to PAM development package: "apt-get install libpam0g-dev" or "yum install pam-devel"])])
 
 AX_CHECK_COMPILE_FLAG(["-fstack-protector-all"], [AX_APPEND_FLAG(["-fstack-protector-all"],[CFLAGS])], [])
 AX_CHECK_COMPILE_FLAG(["-Wl,-z,relro"], [AX_APPEND_FLAG(["-Wl,-z,relro"],[CFLAGS])], [])
