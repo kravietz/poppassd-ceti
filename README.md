@@ -1,3 +1,5 @@
+[![Analysis Status](https://scan.coverity.com/projects/5500/badge.svg)](https://scan.coverity.com/projects/5500)
+
 poppassd-ceti
 =============
 
