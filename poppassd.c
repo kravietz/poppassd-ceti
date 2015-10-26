@@ -221,7 +221,7 @@ int main (int argc, char *argv[])
 
      pw = getpwnam(user);
 
-     if(pw->pw_uid<POP_MIN_UID || pw == NULL) {
+     if(pw == NULL || pw->pw_uid < POP_MIN_UID) {
          WriteToClient("500 Old password is incorrect");
          syslog(LOG_ERR, "failed attempt to change password for %s", user);
          exit(1);
