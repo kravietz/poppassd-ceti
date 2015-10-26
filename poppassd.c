@@ -118,10 +118,11 @@ int poppassd_conv(num_msg, msg, resp, appdata_ptr)
     void        *appdata_ptr;
 {
 	int i;
-	struct pam_response *r = malloc(sizeof(struct pam_response) * num_msg);
 
-	if(num_msg <= 0)
+	if(num_msg <= 0) 
 		return(PAM_CONV_ERR);
+
+	struct pam_response *r = malloc(sizeof(struct pam_response) * num_msg);
 
 	if(r == NULL)
 		return(PAM_CONV_ERR);
