@@ -12,13 +12,17 @@ AC_CHECK_HEADERS([fcntl.h shadow.h stdlib.h string.h strings.h sys/time.h syslog
 AC_CHECK_HEADER([security/pam_appl.h], [], [AC_MSG_ERROR([You need to PAM development package: "apt-get install libpam0g-dev" or "yum install pam-devel"])])
 AC_CHECK_HEADER([security/pam_misc.h], [], [AC_MSG_ERROR([You need to PAM development package: "apt-get install libpam0g-dev" or "yum install pam-devel"])])
 
-AX_CHECK_COMPILE_FLAG(["-fstack-protector-all"], [AX_APPEND_FLAG(["-fstack-protector-all"],[CFLAGS])], [])
-AX_CHECK_COMPILE_FLAG(["-Wl,-z,relro"], [AX_APPEND_FLAG(["-Wl,-z,relro"],[CFLAGS])], [])
-AX_CHECK_COMPILE_FLAG(["-Wl,-z,now"], [AX_APPEND_FLAG(["-Wl,-z,now"],[CFLAGS])], [])
-AX_CHECK_COMPILE_FLAG(["-fPIE"], [AX_APPEND_FLAG(["-fPIE"],[CFLAGS])], [])
-AX_CHECK_COMPILE_FLAG(["-pie"], [AX_APPEND_FLAG(["-pie"],[CFLAGS])], [])
+AC_ARG_ENABLE([hardening], [AC_HELP_STRING([--enable-hardening], [build with hardening flags @<:@default=yes@:>@])], [enable_hardening=$enableval], [enable_hardening=yes])
 
-AX_APPEND_FLAG(["-D_FORTIFY_SOURCE=2"],[CPPFLAGS])
+if test "$enable_hardening" = "yes"; then
+	AX_CHECK_COMPILE_FLAG(["-fstack-protector-all"], [AX_APPEND_FLAG(["-fstack-protector-all"],[CFLAGS])], [])
+	AX_CHECK_COMPILE_FLAG(["-Wl,-z,relro"], [AX_APPEND_FLAG(["-Wl,-z,relro"],[CFLAGS])], [])
+	AX_CHECK_COMPILE_FLAG(["-Wl,-z,now"], [AX_APPEND_FLAG(["-Wl,-z,now"],[CFLAGS])], [])
+	AX_CHECK_COMPILE_FLAG(["-fPIE"], [AX_APPEND_FLAG(["-fPIE"],[CFLAGS])], [])
+	AX_CHECK_COMPILE_FLAG(["-pie"], [AX_APPEND_FLAG(["-pie"],[CFLAGS])], [])
+
+	AX_APPEND_FLAG(["-D_FORTIFY_SOURCE=2"],[CPPFLAGS])
+fi
 
 AX_CFLAGS_WARN_ALL()
 
