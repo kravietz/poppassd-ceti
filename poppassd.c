@@ -34,7 +34,7 @@
  *   E: <closes connection>
  */
  
-#define VERSION "1.8.6"
+#define VERSION "1.8.7"
 #define BAD_PASS_DELAY 	3   /* delay in seconds after bad 'Old password' */
 #define POP_MIN_UID		100 /* minimum UID which is allowed to change
 							   password via poppassd */
