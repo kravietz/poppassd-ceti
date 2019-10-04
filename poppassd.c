@@ -1,17 +1,32 @@
 /*
- * poppassd.c
- *
- * A Eudora and NUPOP change password server.
- * 
- * Pawel Krawczyk <poppassd-bugs@nym.hush.com>
- *
- * Based on poppassd by John Norstad <j-norstad@nwu.edu>,
- * Roy Smith <roy@nyu.edu> and Daniel L. Leavitt <dll.mitre.org>.
- * Shadow file update code taken from shadow-960810 by John F. Haugh
- * II <jfh@rpp386.cactus.org> and Marek Michalkiewicz
- * <marekm@i17linuxb.ists.pwr.wroc.pl>
- *
- * See README for more information.
+  poppassd.c
+
+   A Eudora and NUPOP change password server.
+
+    Pawel Krawczyk <poppassd-bugs@nym.hush.com>
+
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+  Based on poppassd by John Norstad <j-norstad@nwu.edu>,
+  Roy Smith <roy@nyu.edu> and Daniel L. Leavitt <dll.mitre.org>.
+  Shadow file update code taken from shadow-960810 by John F. Haugh
+  II <jfh@rpp386.cactus.org> and Marek Michalkiewicz
+  <marekm@i17linuxb.ists.pwr.wroc.pl>
+
+  See README for more information.
  */
  
 /* Steve Dorner's description of the simple protocol:
