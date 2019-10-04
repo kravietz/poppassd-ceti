@@ -1,4 +1,5 @@
-[![Analysis Status](https://scan.coverity.com/projects/5500/badge.svg)](https://scan.coverity.com/projects/5500)
+[![Coverity](https://scan.coverity.com/projects/5500/badge.svg)](https://scan.coverity.com/projects/5500)
+[![LGTM](https://img.shields.io/lgtm/alerts/g/kravietz/poppassd-ceti.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kravietz/poppassd-ceti/alerts/)
 
 poppassd-ceti
 =============
