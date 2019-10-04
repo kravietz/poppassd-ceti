@@ -170,7 +170,7 @@ int main (int argc, char *argv[])
 {
      char line[BUFSIZE];
      char user[BUFSIZE];
-     struct passwd *pw, *getpwnam();
+    struct passwd *pw;
      pam_handle_t *pamh=NULL;
      
      *user = *oldpass = *newpass = 0;
