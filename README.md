@@ -18,6 +18,10 @@ Poppassd first authenticates the user with its username and password. The authen
 
 If used with web applications, it's recommended that poppassd is only listening on local network interface (`localhost`). The program does not have any access control restrictions and these need to be implemented using operating system's native daemons, such as `inetd` and `tcpd`.
 
+Alternatively, a web application might invoke `poppassd` using the equivalent of `sudo /usr/local/sbin/poppassd`, and avoid listening to network interfaces at all. Sudo will need to be appropriately configured. For example, the following `/etc/sudoers` line might be appropriate:
+
+    apache ALL=(ALL)       NOPASSWD: /usr/local/sbin/poppassd
+
 Protocol
 --------
 Poppassd implements a simple, text based protocol for user authentication and password change:
