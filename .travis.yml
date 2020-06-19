@@ -24,4 +24,4 @@ env:
 jobs:
   include:
     - stage: test
-      script: ./test.sh
+      script: bash test.sh
