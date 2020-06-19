@@ -1,10 +1,8 @@
 language: c
-dist: xenial
-compiler:
-- gcc
+dist: focal
+compiler: gcc
 before_install:
-- sudo apt-get install -y libpam0g-dev cmake
-- cmake --build .
+- sudo apt-get install -y libpam0g-dev
 addons:
   apt:
     update: true
