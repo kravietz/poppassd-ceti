@@ -128,6 +128,8 @@ static inline int getstate(const char *msg) {
         return POP_NEWPASS;
     if (!strcmp(msg, "Retype new UNIX password: "))
         return POP_NEWPASS;
+    if (!strcmp(msg, "Retype new password: "))
+        return POP_NEWPASS;
     if (!strcmp(msg, "New UNIX password: "))
         return POP_NEWPASS;
 
