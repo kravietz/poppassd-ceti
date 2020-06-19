@@ -1,6 +1,7 @@
 language: c
 dist: focal
 compiler: gcc
+script: cmake --build .
 before_install:
 - sudo apt-get install -y libpam0g-dev
 addons:
