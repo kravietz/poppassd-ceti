@@ -1,7 +1,6 @@
 [![Coverity](https://scan.coverity.com/projects/5500/badge.svg)](https://scan.coverity.com/projects/5500)
 [![LGTM](https://img.shields.io/lgtm/alerts/g/kravietz/poppassd-ceti.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kravietz/poppassd-ceti/alerts/)
 [![Build Status](https://travis-ci.org/kravietz/poppassd-ceti.svg?branch=master)](https://travis-ci.org/kravietz/poppassd-ceti)
-[![GitHub forks](https://img.shields.io/github/forks/poppassd-ceti/pam_tacplus.svg)](https://github.com/kravietz/poppassd-ceti/network)
 [![GitHub license](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://github.com/kravietz/poppassd-ceti/blob/master/LICENSE)
 
 poppassd-ceti
