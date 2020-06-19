@@ -5,6 +5,7 @@ before_install:
 - sudo apt-get install -y libpam0g-dev expect
 script:
 - cmake --configure --build .
+- ls -l
 - bash test.sh
 
 addons:
