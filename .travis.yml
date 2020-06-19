@@ -4,7 +4,8 @@ compiler: gcc
 before_install:
 - sudo apt-get install -y libpam0g-dev expect
 script:
-- cmake --configure --build .
+- cmake --configure .
+- cmake --build .
 - ls -l
 - bash test.sh
 
