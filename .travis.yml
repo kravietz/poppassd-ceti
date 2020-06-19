@@ -3,15 +3,15 @@ dist: xenial
 compiler:
 - gcc
 before_install:
-- sudo apt-get install -y libpam0g-dev
-- autoreconf -i
+- sudo apt-get install -y libpam0g-dev cmake
+- cmake --build .
 addons:
   apt:
     update: true
   coverity_scan:
     project:
       name: kravietz/poppassd-ceti
-      version: 1.8.7
+      version: 1.8.8
       description: Travic-CI scan
     notification_email: pawel.krawczyk@hush.com
     build_command_prepend: "./configure"

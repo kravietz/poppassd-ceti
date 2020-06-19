@@ -1,0 +1,8 @@
+#ifndef POPPASSD_CONFIG_H_IN_H
+#define POPPASSD_CONFIG_H_IN_H
+
+#define poppassd_VERSION_MAJOR @poppassd_VERSION_MAJOR@
+#define poppassd_VERSION_MINOR @poppassd_VERSION_MINOR@
+#define poppassd_VERSION_PATCH @poppassd_VERSION_PATCH@
+
+#endif //POPPASSD_CONFIG_H_IN_H
