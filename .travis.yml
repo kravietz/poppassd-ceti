@@ -12,8 +12,7 @@ addons:
       version: 1.8.8
       description: Travic-CI scan
     notification_email: pawel.krawczyk@hush.com
-    build_command_prepend: "./configure"
-    build_command: make
+    build_command: cmake --build .
     branch_pattern: coverity_scan
 env:
   global:
