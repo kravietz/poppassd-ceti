@@ -6,7 +6,6 @@
 
 set -exo pipefail
 
-sudo apt install -y expect
 sudo useradd test1 || true
 echo test1:test1 | sudo chpasswd
 
