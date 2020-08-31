@@ -15,7 +15,7 @@ addons:
   coverity_scan:
     project:
       name: kravietz/poppassd-ceti
-      version: 188
+      version: 189
       description: Travic-CI scan
     notification_email: pawel.krawczyk@hush.com
     build_command: cmake --configure --build .
