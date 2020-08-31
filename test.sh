@@ -38,7 +38,24 @@ send -- "user test1\r"
 expect -exact "user test1\r
 200 Your password please\r\r
 "
-send -- "pass test1\r"
+send -- "pass incorrect\r"
+500 Old password is incorrect
+""
+send -- "quit\r"
+expect eof
+
+spawn sudo ./poppassd
+match_max 100000
+expect -exact "200 poppassd\r\r
+"
+send -- "user doesnotexist\r"
+expect -exact "user doesnotexist\r
+200 Your password please\r\r
+"
+send -- "pass incorrect\r"
+500 Old password is incorrect
+"
+send -- "quit\r"
 expect eof
 _EOT
 
