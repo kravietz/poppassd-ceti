@@ -132,8 +132,22 @@ static inline int getstate(const char *msg) {
         return POP_NEWPASS;
     if (!strcmp(msg, "New UNIX password: "))
         return POP_NEWPASS;
+    if (!strcmp(msg, "Enter new password: "))
+        return POP_NEWPASS;
 
-    WriteToClient("Unknown PAM Message: %s", msg);  // We should not ever reach here.
+#ifndef HAVE_STRCASESTR
+# define strcasestr strstr
+#endif
+
+    // last resort match to recover from unlimited creativity of distribution vendors
+    if (strcasestr(msg, "new password:") != NULL)
+       return POP_NEWPASS;
+
+    // this usually means a PAM configuration error or we were unable to match
+    // the "new password" message; in any case this is unrecoverable
+    WriteToClient("500 Server error");
+
+    syslog(LOG_CRIT, "PAM error: %s", msg);
 
     return POP_SKIPASS;
 }
@@ -156,7 +170,7 @@ int poppassd_conv(num_msg, msg, resp, appdata_ptr)
 
     for (i = 0; i < num_msg; i++) {
         if (msg[i]->msg_style == PAM_ERROR_MSG) {
-            WriteToClient("500 PAM error: %s", msg[i]->msg);
+            WriteToClient("500 Server error");
             syslog(LOG_ERR, "PAM error: %s", msg[i]->msg);
             /*
              * If there is an error, we don't want to be sending in
@@ -166,8 +180,7 @@ int poppassd_conv(num_msg, msg, resp, appdata_ptr)
         }
 
         r[i].resp_retcode = 0;
-        if (msg[i]->msg_style == PAM_PROMPT_ECHO_OFF ||
-            msg[i]->msg_style == PAM_PROMPT_ECHO_ON) {
+        if (msg[i]->msg_style == PAM_PROMPT_ECHO_OFF || msg[i]->msg_style == PAM_PROMPT_ECHO_ON) {
             switch (getstate(msg[i]->msg)) {
                 case POP_OLDPASS:
                     r[i].resp = strdup(oldpass);
@@ -179,7 +192,7 @@ int poppassd_conv(num_msg, msg, resp, appdata_ptr)
                     r[i].resp = NULL;
                     break;
                 default:
-                    syslog(LOG_ERR, "PAM error: unknown state - file a bug report");
+                    syslog(LOG_CRIT, "PAM error: unknown state %s", msg[i]->msg);
             }
         } else {
             r[i].resp = strdup("");
@@ -267,7 +280,7 @@ int main(int argc, char *argv[]) {
         WriteToClient("500 Server pam_chauthtok error %i, password not changed", pamret);
         exit(1);
     } else {
-        syslog(LOG_ERR, "changed POP3 password for %s", user);
+        syslog(LOG_INFO, "changed POP3 password for %s", user);
         WriteToClient("200 Password changed");
         ReadFromClient(line);
         if (strncmp(line, "quit", 4) != 0) {

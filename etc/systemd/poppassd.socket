@@ -1,0 +1,10 @@
+# /etc/systemd/system/poppassd.socket
+[Unit]
+Description=Poppassd Socket
+
+[Socket]
+ListenStream=106
+Accept=yes
+
+[Install]
+WantedBy=sockets.target

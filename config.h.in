@@ -5,4 +5,6 @@
 #define poppassd_VERSION_MINOR @poppassd_VERSION_MINOR@
 #define poppassd_VERSION_PATCH @poppassd_VERSION_PATCH@
 
+#cmakedefine HAVE_STRCASESTR
+
 #endif //POPPASSD_CONFIG_H_IN_H

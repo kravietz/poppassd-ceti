@@ -16,13 +16,9 @@ Features
 
 Security model
 --------------
-Poppassd first authenticates the user with its username and password. The authentication is done through PAM so it includes all PAM restrictions (login time etc) configured locally. Only after successful authentication the program will allow password change. In addition to that poppassd implements internal throttling for unsuccessful logins.
-
-If used with web applications, it's recommended that poppassd is only listening on local network interface (`localhost`). The program does not have any access control restrictions and these need to be implemented using operating system's native daemons, such as `inetd` and `tcpd`.
-
-Alternatively, a web application might invoke `poppassd` using the equivalent of `sudo /usr/local/sbin/poppassd`, and avoid listening to network interfaces at all. Sudo will need to be appropriately configured. For example, the following `/etc/sudoers` line might be appropriate:
-
-    apache ALL=(ALL)       NOPASSWD: /usr/local/sbin/poppassd
+Poppassd operates over standard input and output. Network socket is expected to be handled by [systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html)
+(historically `inetd` or `xinetd`), or by the likes of `expect` if used in scripts. The program first authenticates the user using username and password and then, on success, changes
+the password to a new one. The authentication is done through PAM so it includes all PAM restrictions (login time etc) configured locally.
 
 Protocol
 --------
@@ -52,36 +48,31 @@ Installation
 ------------
 Prerequisites:
 
-* RPM based  (RedHat, CentOS etc):  `yum install pam pam-devel autoconf automake`
-* APT based  (Debian, Ubuntu etc): `apt-get install libpam0g libpam0g-dev autoconf automake`
+* RPM based  (RedHat, CentOS etc):  `yum install pam pam-devel cmake`
+* APT based  (Debian, Ubuntu etc): `apt-get install libpam0g libpam0g-dev cmake`
 
 Installation from source:
 
     git clone https://github.com/kravietz/poppassd-ceti.git
     cd poppassd-ceti
-    autoreconf -I m4 -i
-    ./configure
+    cmake .
     make
     sudo make install
 
-By default, this will install:
+Since version 1.8.9 the default deployment method is [systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html): `systemd` handles the port
+`106/tcp` and starts `poppassd@.service` instance on new connection. Locations of installed files:
 
-* `poppassd` binary to `/usr/local/sbin`
-* `poppassd` [PAM](https://en.wikipedia.org/wiki/Pluggable_authentication_module) configuration file to `/etc/pam.d`
-* `poppassd` [Xinetd](http://www.xinetd.org/) configuration file to `/etc/xinetd.d`
+* `/usr/local/sbin/poppassd`
+* `/etc/systemd/system/poppassd.socket`
+* `/etc/systemd/system/poppassd.service`
+* `/etc/pam.d/poppassd`
 
-If you're using `xinetd` appropriate configuration file has been already installed into `/etc/xinetd.d`. If you prefer the traditional `inetd` and `tcpd` you will need to add the following line to `/etc/inetd.conf`:
-
-    poppassd stream tcp nowait root /usr/sbin/tcpd poppassd
-
-And to `/etc/hosts.deny`:
-
-    poppassd: localhost: allow
-    poppassd: ALL: deny
+`poppassd.socket` may be customized to change default listening port. `/etc/pam.d/poppassd` controls the password change process and requirements such as
+password quality checks etc. By default it loads `common-password` profile, which will result in the same requirements as regular `passwd` program.
 
 Testing
 -------
-Testing is simple as `poppassd` works on standard input:
+Testing is as simple as `poppassd` works on standard input (as `root`):
 
     sudo /usr/local/sbin/poppassd
     200 poppassd
@@ -94,7 +85,7 @@ Testing is simple as `poppassd` works on standard input:
     QUIT
     200 Bye 
     
-If it does not work, check `/var/log/auth.log` in the first place. 
+If it does not work, check `journalctl -f` in the first place or `/var/log/auth.log` on old systems.
  
 Credits
 -------
@@ -102,6 +93,7 @@ This program was initially based on poppassd by John Norstad <j-norstad@nwu.edu>
 
 Versions
 --------
+* Version 1.8.9 - Improve error handling and reporting, add configuration files for `systemd` (@imilos), documentation updates 
 * Version 1.8.8 - Now getstate() takes care of PAM message interpretation, better handling of PAM LDAP and Cracklib modules by Jinesh K J <jinesh_kj@rediffmail.com>
 * Version 1.8.7 - Peter Colberg optimized the build configuration to make distribution builds easier
 * Version 1.8.6 - František Hanzlík helped me refresh `poppassd` and move it to GitHub; the program is now compiled with autotools and includes several security improvements

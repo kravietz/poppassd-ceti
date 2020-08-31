@@ -1,7 +1,25 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(poppassd VERSION 1.8.8)
+project(poppassd VERSION 1.8.9)
+
+include(CheckSymbolExists)
+check_symbol_exists(strcasestr "string.h" HAVE_STRCASESTR)
 
 configure_file(config.h.in config.h)
 add_executable(poppassd poppassd.c config.h)
 target_link_libraries(poppassd PRIVATE pam)
+
+install(FILES poppassd TYPE SBIN PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
+install(FILES etc/pam/poppassd DESTINATION /etc/pam.d)
+install(FILES etc/systemd/poppassd.service DESTINATION /etc/systemd/system)
+install(FILES etc/systemd/poppassd.socket  DESTINATION /etc/systemd/system)
+install(CODE "execute_process(COMMAND systemctl daemon-reload)")
+install(CODE "execute_process(COMMAND systemctl enable poppassd.socket)")
+install(CODE "execute_process(COMMAND systemctl start poppassd.socket)")
+
+enable_testing()
+
+add_test(NAME Init_test_user COMMAND sudo useradd -M -p "$6$Nrnet5Z6dws8EY4E$djyxKYe7qc4K2xd.Q9QiVzKg0kN8rbEQkImRZZ/IuNw6ZHQuaIqaRAdwuPo.oiw1E.H.l3.xI6rDqFYc3sQiW/" test1)
+add_test(NAME Success        COMMAND expect test/successful-password-change.expect)
+add_test(NAME Old_pass_wrong COMMAND expect test/old-pass-incorrect.expect)
+add_test(NAME Invalid_user   COMMAND expect test/user-does-not-exist.expect)
