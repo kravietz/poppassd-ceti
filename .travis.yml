@@ -8,7 +8,6 @@ script:
 - cmake --build .
 - ls -l
 - ctest
-#- bash test.sh
 
 addons:
   apt:

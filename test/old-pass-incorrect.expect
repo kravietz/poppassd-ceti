@@ -1,0 +1,10 @@
+spawn sudo ./poppassd
+match_max 100000
+expect -exact "200 poppassd\r\r
+"
+send -- "user test1\r"
+expect -exact "user test1\r
+200 Your password please\r
+"
+send -- "pass incorrect\r"
+expect eof
