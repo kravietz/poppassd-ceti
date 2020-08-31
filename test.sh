@@ -39,8 +39,9 @@ expect -exact "user test1\r
 200 Your password please\r\r
 "
 send -- "pass incorrect\r"
+expect -exact "pass incorect\r
 500 Old password is incorrect
-""
+"
 send -- "quit\r"
 expect eof
 
@@ -53,6 +54,7 @@ expect -exact "user doesnotexist\r
 200 Your password please\r\r
 "
 send -- "pass incorrect\r"
+expect -exact "pass incorect\r
 500 Old password is incorrect
 "
 send -- "quit\r"
