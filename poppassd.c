@@ -132,8 +132,8 @@ static inline int getstate(const char *msg) {
         return POP_NEWPASS;
     if (!strcmp(msg, "New UNIX password: "))
         return POP_NEWPASS;
-//    if (!strcmp(msg, "Enter new password: "))
-//        return POP_NEWPASS;
+    if (!strcmp(msg, "Enter new password: "))
+        return POP_NEWPASS;
 
 #ifndef HAVE_STRCASESTR
 # define strcasestr strstr
