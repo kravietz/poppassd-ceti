@@ -22,8 +22,11 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{runner.workspace}}/build
 
-    - name: Install dependencies
-      run: sudo apt-get update && apt-get -y install libpam0g libpam-dev expect
+    - name: Update apt
+      run: sudo apt-get update
+
+    - name: Install apt dependencies
+      run: sudo apt-get -y install libpam0g libpam-dev expect
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
