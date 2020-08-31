@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(poppassd VERSION 1.8.8)
+project(poppassd VERSION 1.8.9)
 
 include(CheckSymbolExists)
 check_symbol_exists(strcasestr "string.h" HAVE_STRCASESTR)
@@ -13,4 +13,6 @@ install(FILES poppassd TYPE SBIN)
 install(FILES etc/pam/poppassd DESTINATION /etc/pam.d)
 install(FILES etc/systemd/poppassd.service DESTINATION /etc/systemd/system)
 install(FILES etc/systemd/poppassd.socket  DESTINATION /etc/systemd/system)
-install(CODE "systemctl daemon-reload")
+install(CODE "execute_process(COMMAND systemctl daemon-reload)")
+install(CODE "execute_process(COMMAND systemctl enable poppassd.socket)")
+install(CODE "execute_process(COMMAND systemctl start poppassd.socket)")
