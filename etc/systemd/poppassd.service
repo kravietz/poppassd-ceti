@@ -1,6 +1,8 @@
 # /etc/systemd/system/poppassd@.service
+# this is only expected to be invoked by poppassd.socket
+
 [Unit]
-Description=Poppassd Service
+Description=Password change daemon
 Requires=poppassd.socket
 
 [Service]
@@ -10,29 +12,39 @@ StandardInput=socket
 StandardOutput=socket
 StandardError=journal
 TimeoutStopSec=5
+Restart=no
+
+# service confinement is important as it runs as root
+# this ticks almost all safeguards on `systemd-analyze security` checklist
 NoNewPrivileges=yes
 ProtectControlGroups=yes
 ProtectKernelModules=yes
 ProtectKernelTunables=yes
+ProtectKernelLogs=yes
 ProtectHostname=yes
 PrivateTmp=yes
 PrivateDevices=yes
-RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+PrivateNetwork=yes
 SystemCallArchitectures=native
 CPUSchedulingPolicy=batch
 RestrictNamespaces=yes
 RestrictRealtime=yes
 SystemCallErrorNumber=EPERM
-MountAPIVFS=yes
 SystemCallFilter=@system-service
 LockPersonality=yes
-CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_DAC_OVERRIDE CAP_DAC_READ_SEARCH
 ProtectSystem=strict
-ReadWritePaths=/home/homebase/.ipfs
 ProtectClock=yes
 MemoryDenyWriteExecute=yes
-ProtectKernelLogs=yes
 RestrictSUIDSGID=yes
+ProtectClock=yes
+DevicePolicy=closed
+DeviceAllow=
+IPAddressDeny=any
+ProtectHome=yes
+SystemCallFilter=@basic-io
+SystemCallFilter=~@privileged @resources
+RestrictAddressFamilies=~AF_INET AF_INET6 AF_PACKET AF_UNIX AF_NETLINK
+CapabilityBoundingSet=
 
 [Install]
 WantedBy=multi-user.target
