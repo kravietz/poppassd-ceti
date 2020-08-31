@@ -7,7 +7,8 @@ script:
 - cmake --configure .
 - cmake --build .
 - ls -l
-- bash test.sh
+- ctest
+#- bash test.sh
 
 addons:
   apt:
