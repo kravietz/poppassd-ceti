@@ -277,7 +277,7 @@ int main(int argc, char *argv[]) {
         WriteToClient("500 Server pam_chauthtok error %i, password not changed", pamret);
         exit(1);
     } else {
-        syslog(LOG_ERR, "changed POP3 password for %s", user);
+        syslog(LOG_INFO, "changed POP3 password for %s", user);
         WriteToClient("200 Password changed");
         ReadFromClient(line);
         if (strncmp(line, "quit", 4) != 0) {
