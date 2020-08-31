@@ -132,6 +132,16 @@ static inline int getstate(const char *msg) {
         return POP_NEWPASS;
     if (!strcmp(msg, "New UNIX password: "))
         return POP_NEWPASS;
+//    if (!strcmp(msg, "Enter new password: "))
+//        return POP_NEWPASS;
+
+#ifndef HAVE_STRCASESTR
+# define strcasestr strstr
+#endif
+
+    // last resort match to recover from unlimited creativity of distribution vendors
+    if (strcasestr(msg, "new password:") != NULL)
+       return POP_NEWPASS;
 
     WriteToClient("Unknown PAM Message: %s", msg);  // We should not ever reach here.
 
