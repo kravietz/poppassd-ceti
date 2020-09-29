@@ -70,7 +70,7 @@
 #endif
 
 #define BAD_PASS_DELAY    3   /* delay in seconds after bad 'Old password' */
-#define POP_MIN_UID        100 /* minimum UID which is allowed to change
+#define POP_MIN_UID        100 /* minimum UID which is allowed to change */
 
 /* These need to be quoted because they are only used as
  * parts of format strings for sscanf; actual lengths are smaller
