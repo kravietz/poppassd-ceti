@@ -93,6 +93,7 @@ This program was initially based on poppassd by John Norstad <j-norstad@nwu.edu>
 
 Versions
 --------
+* Version 1.8.10 - Include more portable PAM configuration, build fixes for FreeBSD
 * Version 1.8.9 - Improve error handling and reporting, add configuration files for `systemd` (@imilos), documentation updates 
 * Version 1.8.8 - Now getstate() takes care of PAM message interpretation, better handling of PAM LDAP and Cracklib modules by Jinesh K J <jinesh_kj@rediffmail.com>
 * Version 1.8.7 - Peter Colberg optimized the build configuration to make distribution builds easier

@@ -1,4 +1,2 @@
 #%PAM-1.0
-auth       include	system-auth
-account    include	system-auth
-password   include	system-auth
+password	required	pam_unix.so		no_warn try_first_pass nullok

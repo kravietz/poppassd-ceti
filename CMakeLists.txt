@@ -23,7 +23,7 @@ install(CODE "execute_process(COMMAND systemctl start poppassd.socket)")
 
 enable_testing()
 
-add_test(NAME Init_test_user COMMAND sudo useradd -M -p "$6$Nrnet5Z6dws8EY4E$djyxKYe7qc4K2xd.Q9QiVzKg0kN8rbEQkImRZZ/IuNw6ZHQuaIqaRAdwuPo.oiw1E.H.l3.xI6rDqFYc3sQiW/" test1)
+add_test(NAME Init_test_user COMMAND bash test/init-user.sh)
 add_test(NAME Success        COMMAND expect test/successful-password-change.expect)
 add_test(NAME Old_pass_wrong COMMAND expect test/old-pass-incorrect.expect)
 add_test(NAME Invalid_user   COMMAND expect test/user-does-not-exist.expect)
