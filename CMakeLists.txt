@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(poppassd VERSION 1.8.9)
+project(poppassd VERSION 1.8.10)
 
 include(CheckSymbolExists)
 check_symbol_exists(strcasestr "string.h" HAVE_STRCASESTR)
+
+# Linux specific include, skip on FreeBSD
+INCLUDE(CheckIncludeFile)
+CHECK_INCLUDE_FILE(security/pam_misc.h HAVE_PAM_MISC)
 
 configure_file(config.h.in config.h)
 add_executable(poppassd poppassd.c config.h)

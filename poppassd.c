@@ -62,13 +62,15 @@
 #include <unistd.h>
 
 #include <security/pam_appl.h>
-#include <security/pam_misc.h>
 
 #include "config.h"
 
+#ifdef HAVE_PAM_MISC
+# include <security/pam_misc.h>
+#endif
+
 #define BAD_PASS_DELAY    3   /* delay in seconds after bad 'Old password' */
 #define POP_MIN_UID        100 /* minimum UID which is allowed to change
-							   password via poppassd */
 
 /* These need to be quoted because they are only used as
  * parts of format strings for sscanf; actual lengths are smaller
