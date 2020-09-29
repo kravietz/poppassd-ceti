@@ -9,7 +9,7 @@ sources:
 - https://git.sr.ht/~kravietz/poppassd-ceti
 tasks:
 - configure: |
-        cd pam-tacplus
-        cmake --configure .
+        cd poppassd-ceti
         cmake --build .
+        cmake --install .
         ctest
