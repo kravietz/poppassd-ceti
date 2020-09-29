@@ -6,7 +6,6 @@ before_install:
 script:
 - cmake --configure .
 - cmake --build .
-- ls -l
 - ctest
 
 addons:

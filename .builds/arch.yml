@@ -1,0 +1,14 @@
+---
+# build manifest for SourceHut
+# https://man.sr.ht/builds.sr.ht/
+image: arch
+packages:
+- cmake
+sources:
+- https://git.sr.ht/~kravietz/poppassd-ceti
+tasks:
+- configure: |
+        cd pam-tacplus
+        cmake --configure .
+        cmake --build .
+        ctest
