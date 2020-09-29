@@ -1,7 +1,7 @@
 ---
 # build manifest for SourceHut
 # https://man.sr.ht/builds.sr.ht/
-image: arch
+image: archlinux
 packages:
 - cmake
 sources:
