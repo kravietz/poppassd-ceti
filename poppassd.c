@@ -59,6 +59,7 @@
 #include <stdarg.h>
 #include <pwd.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <security/pam_appl.h>
 #include <security/pam_misc.h>
