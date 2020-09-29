@@ -9,6 +9,6 @@ sources:
 tasks:
 - configure: |
         cd pam-tacplus
-        cmake --configure .
         cmake --build .
+        cmake --install .
         ctest
