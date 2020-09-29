@@ -122,6 +122,8 @@ static inline int getstate(const char *msg) {
         return POP_OLDPASS;
     if (!strcmp(msg, "Enter login(LDAP) password: "))
         return POP_OLDPASS;
+    if (!strcmp(msg, "Password:")) /* FreeBSD */
+        return POP_OLDPASS;
 
     if (!strcmp(msg, "New password: "))
         return POP_NEWPASS;
@@ -150,7 +152,7 @@ static inline int getstate(const char *msg) {
     // the "new password" message; in any case this is unrecoverable
     WriteToClient("500 Server error");
 
-    syslog(LOG_CRIT, "PAM error: %s", msg);
+    syslog(LOG_CRIT, "PAM unrecognized message: \"%s\", report at https://github.com/kravietz/poppassd-ceti/issues", msg);
 
     return POP_SKIPASS;
 }
@@ -174,7 +176,7 @@ int poppassd_conv(num_msg, msg, resp, appdata_ptr)
     for (i = 0; i < num_msg; i++) {
         if (msg[i]->msg_style == PAM_ERROR_MSG) {
             WriteToClient("500 Server error");
-            syslog(LOG_ERR, "PAM error: %s", msg[i]->msg);
+            syslog(LOG_ERR, "PAM error: \"%s\", report at https://github.com/kravietz/poppassd-ceti/issues", msg[i]->msg);
             /*
              * If there is an error, we don't want to be sending in
              * anything more, so set pop_state to invalid
@@ -195,7 +197,7 @@ int poppassd_conv(num_msg, msg, resp, appdata_ptr)
                     r[i].resp = NULL;
                     break;
                 default:
-                    syslog(LOG_CRIT, "PAM error: unknown state %s", msg[i]->msg);
+                    syslog(LOG_CRIT, "PAM error: unknown state \"%s\", report at https://github.com/kravietz/poppassd-ceti/issues", msg[i]->msg);
             }
         } else {
             r[i].resp = strdup("");
