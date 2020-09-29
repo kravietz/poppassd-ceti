@@ -4,11 +4,13 @@
 image: freebsd/latest
 packages:
 - cmake
+- expect
 sources:
 - https://git.sr.ht/~kravietz/pam-tacplus
 tasks:
 - configure: |
         cd poppassd-ceti
+        cmake .
         cmake --build .
-        cmake --install .
+        sudo cmake --install .
         ctest

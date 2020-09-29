@@ -5,11 +5,13 @@ image: ubuntu/lts
 packages:
 - cmake
 - libpam-dev
+- expect
 sources:
 - https://git.sr.ht/~kravietz/poppassd-ceti
 tasks:
 - configure: |
         cd poppassd-ceti
+        cmake .
         cmake --build .
-        cmake --install .
+        sudo cmake --install .
         ctest
