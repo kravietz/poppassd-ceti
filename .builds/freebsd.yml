@@ -6,7 +6,7 @@ packages:
 - cmake
 - expect
 sources:
-- https://git.sr.ht/~kravietz/pam-tacplus
+- https://git.sr.ht/~kravietz/poppassd-ceti
 tasks:
 - configure: |
         cd poppassd-ceti
