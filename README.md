@@ -18,13 +18,17 @@ Features
 
 Security model
 --------------
-Poppassd operates over standard input and output exclusively. Network socket is expected to be handled by [systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html)
-(historically `inetd` or `xinetd`).  Authentication and password change are handled exclusively by PAM.
+Poppassd operates over standard input and output exclusively. On modern Linux servers the network socket is expected to be handled entirely by
+[systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html). On legacy FreeBSD it's expected to be run from
+[inetd](https://www.freebsd.org/doc/handbook/network-inetd.html) and from [xinetd](https://linux.die.net/man/8/xinetd) on legacy Linux servers.
+
+Authentication and actual password change are handled exclusively by PAM on all systems.
 
 In the intended usage model of remote network applications or local web applications connect to the `poppassd` port over TCP, which creates a clear trust boundary and avoids potentially dangerous
 shell script operations using SUID or `expect` as seen in some other solutions to the same problem.
 
-Systemd `poppassd.service` which actually runs the `poppassd` binary uses a reasonable set of [systemd hardening](https://krvtz.net/posts/reducing-your-attack-surface-with-systemd.html) features to further reduce the attack surface on modern systems.
+On modern Linux servers the `systemd` `poppassd.service` uses a reasonable set of [systemd hardening](https://krvtz.net/posts/reducing-your-attack-surface-with-systemd.html)
+features to further reduce the attack surface.
 
 Configuration
 -------------
@@ -74,13 +78,15 @@ Installation from source:
     make
     sudo make install
 
-Since version 1.8.9 the default deployment method is [systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html): `systemd` handles the port
+Since version 1.8.9 the default deployment method on Linux is [systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html): `systemd` handles the port
 `106/tcp` and starts `poppassd@.service` instance on new connection. Locations of installed files:
 
 * `/usr/local/sbin/poppassd`
 * `/etc/systemd/system/poppassd.socket`
 * `/etc/systemd/system/poppassd.service`
 * `/etc/pam.d/poppassd`
+
+The service files are *not* installed Linux servers without `systemd` and FreeBSD. Service definition is up to the administrator on these servers.
 
 Testing
 -------
