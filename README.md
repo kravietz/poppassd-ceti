@@ -7,19 +7,33 @@
 poppassd-ceti
 =============
 
-An Eudora and NUPOP change password server that allows user password change on PAM based systems via a simple POP3-like protocol. This daemon is frequently used as a backend for web based password change interfaces.
+An Eudora and NUPOP change password server that allows user password change on PAM based systems via a simple POP3-like protocol.
+This daemon is frequently used as a backend for web based password change interfaces.
 
 Features
 --------
-* Uses [PAM (Pluggable Authentication Module)](https://en.wikipedia.org/wiki/Pluggable_authentication_module) so all system-wide controls (such as password quality auditing) are still enforced
+* Uses [PAM (Pluggable Authentication Module)](https://en.wikipedia.org/wiki/Pluggable_authentication_module) so all system-wide controls (such as password quality restrictions) are still enforced
 * Does not call any external programs with SUID permissions (as CGI wrappers for `passwd`  do)
 * Simple, clean code with no known security issues since 2002
 
 Security model
 --------------
-Poppassd operates over standard input and output. Network socket is expected to be handled by [systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html)
-(historically `inetd` or `xinetd`), or by the likes of `expect` if used in scripts. The program first authenticates the user using username and password and then, on success, changes
-the password to a new one. The authentication is done through PAM so it includes all PAM restrictions (login time etc) configured locally.
+Poppassd operates over standard input and output exclusively. Network socket is expected to be handled by [systemd.socket](https://www.freedesktop.org/software/systemd/man/systemd.socket.html)
+(historically `inetd` or `xinetd`).  Authentication and password change are handled exclusively by PAM.
+
+In the intended usage model of remote network applications or local web applications connect to the `poppassd` port over TCP, which creates a clear trust boundary and avoids potentially dangerous
+shell script operations using SUID or `expect` as seen in some other solutions to the same problem.
+
+Systemd `poppassd.service` which actually runs the `poppassd` binary uses a reasonable set of [systemd hardening](https://krvtz.net/posts/reducing-your-attack-surface-with-systemd.html) features to further reduce the attack surface on modern systems.
+
+Configuration
+-------------
+Poppassd uses PAM definitions from `/etc/pam.d/poppassd` for authentication of users and password change. Any local policies such as LDAP authentication, login times, password quality enforcement
+should be configured there per [PAM System Administrator's Guide](http://www.linux-pam.org/Linux-PAM-html/Linux-PAM_SAG.html). Default PAM configuration does *not* have any provisions to
+restrict number of login attempts per user, so this must be configured in PAM as well. The daemon itself however introduces a delay after each unsuccessful login attempt which to some
+extent reduces effectiveness of password bruteforcing.
+
+Use `systemctl edit --full poppassd.socket` to change default listening port (default `106/tcp`) or bind address (default `localhost`).
 
 Protocol
 --------
@@ -43,7 +57,7 @@ Server responses starting with `200` are successs, `500` are errors:
     PASS old_password
     500 Old password is incorrect
 
-Integration with web applications requires that the application  connects to `localhost` on port `106/tcp` and speaks the above protocol using the data supplier by the user.
+Integration with web applications requires that the application  connects over TCP `localhost:106` and speaks the above protocol using the data supplier by the user.
 
 Installation
 ------------
@@ -68,9 +82,6 @@ Since version 1.8.9 the default deployment method is [systemd.socket](https://ww
 * `/etc/systemd/system/poppassd.service`
 * `/etc/pam.d/poppassd`
 
-`poppassd.socket` may be customized to change default listening port. `/etc/pam.d/poppassd` controls the password change process and requirements such as
-password quality checks etc. By default it loads `common-password` profile, which will result in the same requirements as regular `passwd` program.
-
 Testing
 -------
 Testing is as simple as `poppassd` works on standard input (as `root`):
@@ -86,7 +97,10 @@ Testing is as simple as `poppassd` works on standard input (as `root`):
     QUIT
     200 Bye 
     
-If it does not work, check `journalctl -f` in the first place or `/var/log/auth.log` on old systems.
+If it does not work, check `journalctl -xe` or `/var/log/auth.log` on old systems. The most frequent problem are PAM configuration issues.
+
+If it works locally but doesn't work over `localhost:106` you may need to use `systemctl edit --full poppassd.service` and disable some of the
+`systemd` hardening settings as they might be too restrictive on your system.
  
 Credits
 -------
