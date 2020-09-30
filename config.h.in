@@ -6,5 +6,6 @@
 #define poppassd_VERSION_PATCH @poppassd_VERSION_PATCH@
 
 #cmakedefine HAVE_STRCASESTR
+#cmakedefine HAVE_PAM_MISC
 
 #endif //POPPASSD_CONFIG_H_IN_H
