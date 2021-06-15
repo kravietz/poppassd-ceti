@@ -234,6 +234,11 @@ int main(int argc, char *argv[]) {
         WriteToClient("500 Username required");
         exit(1);
     }
+  
+    char *sp;
+    for (sp = user; isalpha(*sp); sp++)
+        *sp = (unsigned char) tolower((unsigned char) *sp);
+  
     if (pam_start("poppassd", user, &pam_conv, &pamh) != PAM_SUCCESS) {
         WriteToClient("500 Invalid username");
         exit(1);
