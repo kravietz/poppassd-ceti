@@ -42,9 +42,10 @@ DeviceAllow=
 IPAddressDeny=any
 ProtectHome=yes
 SystemCallFilter=@basic-io
-SystemCallFilter=~@privileged @resources
-RestrictAddressFamilies=~AF_INET AF_INET6 AF_PACKET AF_UNIX AF_NETLINK
-CapabilityBoundingSet=
+SystemCallFilter=~@resources
+RestrictAddressFamilies=~AF_INET AF_INET6 AF_PACKET
+CapabilityBoundingSet=CAP_CHOWN
+ReadWritePaths=/etc
 
 [Install]
 WantedBy=multi-user.target
